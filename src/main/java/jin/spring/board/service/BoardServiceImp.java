@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import jin.spring.board.dao.BoardDAO;
 import jin.spring.board.dto.BoardDTO;
+import jin.spring.board.dto.Criteria;
 import lombok.RequiredArgsConstructor;
 
 /* 
@@ -62,11 +63,17 @@ public class BoardServiceImp implements BoardService{
 	
 //	게시글 목록 조회
 	@Override
-	public List<BoardDTO> boardSelectAll() throws Exception {
+	public List<BoardDTO> boardSelectAll(Criteria cri) throws Exception {
 //		게시글 목록 조회
-		return boardDAO.selectAll();
+		return boardDAO.selectAll(cri);
 	}
 
+//	게시물 총 개수
+	@Override
+	public int listCount() throws Exception {
+		return boardDAO.listCount();
+	}
+	
 //	게시글 상세 조회
 	@Override
 	public BoardDTO boardSelect(int bnum) throws Exception {

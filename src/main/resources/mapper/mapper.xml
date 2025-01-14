@@ -13,11 +13,28 @@
 		#{bcontent}, #{bwriter})
 	</insert>
 
-	<!-- 게시글 목록 조회 -->
-	<select id="selectAll" resultType="BoardDTO">
-		SELECT bnum, btitle, bwriter,
-		bdate FROM board
-		ORDER BY bnum DESC
+	<!-- 게시글 목록 조회-페이징 처리-->
+	<select id="listPage" resultType="BoardDTO"	parameterType="jin.spring.board.dto.Criteria">
+		select bnum, btitle, bcontent, bwriter, bdate
+		from (select bnum, 
+					btitle, 
+					bcontent, 
+					bwriter, 
+					bdate,
+					row_number() over(order by bnum desc) as rNum
+				from board
+						) MP
+		where rNum between #{rowStart} and #{rowEnd}
+		order by bnum desc
+	</select>
+	
+	<!-- 게시글 총 개수 -->
+	<select id="listCount" resultType="int">
+	<![CDATA[
+		SELECT COUNT(bnum)
+		  FROM BOARD
+		 WHERE bnum > 0
+	]]>
 	</select>
 
 	<!-- 게시글 상세 조회 -->
@@ -30,12 +47,14 @@
 	<!-- 게시글 수정 -->
 	<update id="update" parameterType="BoardDTO">
 		update board
-		set btitle = #{btitle}, bcontent = #{bcontent}
+		set btitle =
+		#{btitle}, bcontent = #{bcontent}
 		where bnum = #{bnum}
 	</update>
 
 	<!-- 게시글 삭제 -->
 	<delete id="delete" parameterType="int">
-		delete from board where bnum = #{bnum}
+		delete from board where bnum =
+		#{bnum}
 	</delete>
 </mapper>

@@ -3,6 +3,7 @@ package jin.spring.board.service;
 import java.util.List;
 
 import jin.spring.board.dto.BoardDTO;
+import jin.spring.board.dto.Criteria;
 
 //인터페이스의 메서드 접근 제한자는 기본적으로 public
 //따라서 public을 생략해도 동일하게 처리되며, 코드가 간결해짐
@@ -12,7 +13,10 @@ public interface BoardService {
 	void boardInsert(BoardDTO boardDTO) throws Exception;
 	
 //	게시글 목록 조회
-	List<BoardDTO> boardSelectAll() throws Exception;
+	List<BoardDTO> boardSelectAll(Criteria cri) throws Exception;
+	
+//	게시물 총 개수
+	int listCount() throws Exception;
 	
 //	게시글 상세 조회
 	BoardDTO boardSelect(int bnum) throws Exception;

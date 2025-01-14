@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import jin.spring.board.dto.BoardDTO;
+import jin.spring.board.dto.Criteria;
 import lombok.RequiredArgsConstructor;
 
 /*MyBatis SQL 쿼리 실행 코드를 작성하고, 실제 데이터베이스와 상호작용하는 구현체
@@ -41,16 +42,23 @@ public class BoardDAOImp implements BoardDAO {
 	}
 	
 //	게시글 목록 조회
+//	listPage로 수정
 	@Override
-	public List<BoardDTO> selectAll() throws Exception {
+	public List<BoardDTO> selectAll(Criteria cri) throws Exception {
 		/*
-		 * XML 매퍼 파일에서 namespace="jin.spring.board"와 id="selectAll"에 해당하는 
+		 * XML 매퍼 파일에서 namespace="jin.spring.board"와 id="listPage"에 해당하는 
 		 * SQL 쿼리를 실행 
 		 * 쿼리 결과는 List<BoardDTO> 형태로 반환
 		 */
-		return sqlSessionTemplate.selectList("jin.spring.board.selectAll");
+		return sqlSessionTemplate.selectList("jin.spring.board.listPage", cri);
 	}
 
+//	게시물 총 개수 코드 추가
+	@Override
+	public int listCount() throws Exception {
+		return sqlSessionTemplate.selectOne("jin.spring.board.listCount");
+	}
+	
 //	게시글 상세 조회
 	@Override
 	public BoardDTO select(int bnum) throws Exception {

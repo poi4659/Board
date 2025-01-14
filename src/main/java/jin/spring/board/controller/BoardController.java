@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;import jin.spring.board.dao.BoardDAO;
 import jin.spring.board.dto.BoardDTO;
+import jin.spring.board.dto.Criteria;
+import jin.spring.board.dto.PageMaker;
 import jin.spring.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 
@@ -49,9 +51,27 @@ public class BoardController {
 	
 //	게시글 목록 조회
 	@GetMapping("/BoardList")
-	public String selectAll(Model model) throws Exception {
+//	Criteria 객체는 페이지 번호와 페이지당 표시할 데이터 개수를 포함하는 객체
+	public String selectAll(Model model, Criteria cri) throws Exception {
 		logger.info("list");
-		model.addAttribute("list", boardService.boardSelectAll());
+		/*
+		 * boardService에서 전체 게시글 목록을 가져오는 서비스 메서드 
+		 * cri를 파라미터로 전달하여 페이징된 결과를 가져옴
+		 */
+		model.addAttribute("list", boardService.boardSelectAll(cri));
+		
+//		페이징 처리 코드 추가
+//		PageMaker는 페이징 처리를 담당하는 객체로, 전체 페이지의 시작 페이지, 끝 페이지 등을 계산
+		PageMaker pageMaker = new PageMaker();
+		
+//		cri 객체를 PageMaker에 설정하여, 현재 페이지와 페이지당 표시할 데이터 개수를 사용하도록 함
+		pageMaker.setCri(cri);
+		
+//		boardService.listCount()를 호출하여 전체 게시글의 수를 가져오고, 
+//		이를 PageMaker에 설정하여 전체 페이지 수를 계산할 수 있게 함
+		pageMaker.setTotalCount(boardService.listCount());
+		
+		model.addAttribute("pageMaker", pageMaker);
 		
 //		게시글 목록 뷰 반환
 		return "./board/board_select";
