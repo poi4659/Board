@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+	xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc file:///C:/schema/spring-mvc.xsd 
+	http://www.springframework.org/schema/beans file:///C:/schema/spring-beans.xsd 
+	http://www.springframework.org/schema/context file:///C:/schema/spring-context.xsd">
+	<!--@Controller 어노테이션이 선언된 빈을 활성화하지만, 빈을 검색하거나 매핑 할 수 없다. -->
+	<annotation-driven />
+	<!--서블릿이 아닌 파일들에 대한 실행을 담당한다. -->
+	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/css/**" location="/resources/css/" />
+	<resources mapping="/js/**" location="/resources/js/" />
+	<resources mapping="/img/**" location="/resources/img/" />
+	<!--뷰에 대한 설정을 등록하는 InternalResourceViewResolver 클래스를 설정한다. -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!--뷰의 접근 경로를 설정한다. -->
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<!--확장자를 설정하며 설정된 확장자는 명시하지 않아도 된다. -->
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	<!--빈의 등록 여부와 관계없이 어노테이션을 활성화한다. -->
+	<context:component-scan base-package="jin.spring.board"/>
+</beans:beans>
