@@ -15,12 +15,6 @@ import lombok.RequiredArgsConstructor;
  * ->"boardDAOImp" 이름을 가진 빈으로 등록
  * */
 @Repository
-
-/*
- * Lombok 어노테이션으로, final로 선언된 필드에 대해 생성자를 자동으로 생성
- * ->sqlSessionTemplate에 대해 생성자가 자동으로 생성됨
- */
-@RequiredArgsConstructor
 public class BoardDAOImp implements BoardDAO {
 	/*
 	 * BoardDAOImp 클래스가 Spring 컨텍스트에 의해 생성될 때, 
