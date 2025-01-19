@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;import jin.spring.board.dao.BoardDAO;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import jin.spring.board.dao.BoardDAO;
 import jin.spring.board.dto.BoardDTO;
 import jin.spring.board.dto.Criteria;
 import jin.spring.board.dto.PageMaker;

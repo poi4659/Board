@@ -12,8 +12,9 @@
 	http://mybatis.org/schema/mybatis-spring https://mybatis.org/schema/mybatis-spring.xsd">
 
 	<!--빈의 등록 여부와 관계없이 어노테이션을 활성화 -->
-	<context:component-scan	base-package="jin.spring.board" />
-    
+	<context:component-scan
+		base-package="jin.spring.board" />
+
 	<bean class="com.zaxxer.hikari.HikariDataSource"
 		id="hikariDataSource" destroy-method="close">
 		<property name="driverClassName"
@@ -29,14 +30,22 @@
 		<property name="dataSource" ref="hikariDataSource" />
 		<property name="configLocation"
 			value="classpath:/configuration/config.xml" />
-		<property name="mapperLocations"
-			value="classpath:/mapper/mapper.xml" />
+		<property name="mapperLocations">
+			<!-- 여러 매퍼 파일 경로를 쉼표로 구분하여 추가 -->
+			<list>
+				<value>classpath:/mapper/mapper.xml</value>
+				<!-- 회원 mapper 추가 -->
+				<value>classpath:/mapper/memberMapper.xml</value>
+			</list>
+		</property>
 	</bean>
 	<bean class="org.mybatis.spring.SqlSessionTemplate"
 		id="sqlSessionTemplate">
 		<constructor-arg ref="sqlSessionFactoryBean" />
 	</bean>
-	<bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+	<bean
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		id="transactionManager">
 		<property name="dataSource" ref="hikariDataSource" />
 	</bean>
 	<tx:annotation-driven

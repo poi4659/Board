@@ -3,10 +3,11 @@
 	로컬로 등록한다. -->
  <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "file:///C:/schema/mybatis-3-config.dtd">
 <configuration>
-	<!--별칭 환경을 설정한다. -->
-	<typeAliases>
-		<!--DeptDTO 클래스에 대한 별칭을 설정한다. -->
-		<typeAlias alias="BoardDTO"
-			type="jin.spring.board.dto.BoardDTO" />
-	</typeAliases>
+    <!-- 별칭 환경을 설정한다. -->
+    <typeAliases>
+        <!-- BoardDTO 클래스에 대한 별칭을 설정한다. -->
+        <typeAlias alias="BoardDTO" type="jin.spring.board.dto.BoardDTO" />
+        <!-- MemberDTO 클래스에 대한 별칭을 설정한다. -->
+        <typeAlias alias="MemberDTO" type="jin.spring.board.member.dto.MemberDTO" />
+    </typeAliases>
 </configuration>

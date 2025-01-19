@@ -1,4 +1,4 @@
-package jin.spring.member.dto;
+package jin.spring.board.member.dto;
 
 import java.sql.Date;
 

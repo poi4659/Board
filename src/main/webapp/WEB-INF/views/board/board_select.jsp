@@ -10,29 +10,28 @@
 <style type="text/css">
 /* 페이징 가로 정렬 */
 ul {
-    list-style: none;
-    padding: 0;
-    text-align: center;
-    margin: 0 auto;  /* 가로로 중앙 정렬 */
+	list-style: none;
+	padding: 0;
+	text-align: center;
+	margin: 0 auto; /* 가로로 중앙 정렬 */
 }
 
 li {
-    display: inline-block; /* inline-block을 사용하여 가로로 나열 */
-    padding: 6px;
+	display: inline-block; /* inline-block을 사용하여 가로로 나열 */
+	padding: 6px;
 }
 
 li a {
-    text-decoration: none;
-    padding: 8px 16px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    color: #333;
+	text-decoration: none;
+	padding: 8px 16px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	color: #333;
 }
 
 li a:hover {
-    background-color: #f8f9fa;
+	background-color: #f8f9fa;
 }
-
 </style>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,6 +39,24 @@ li a:hover {
 <link rel="stylesheet" type="text/css" href="./css/global.css">
 <script src="./js/jquery-3.5.1.min.js" type="text/javascript"></script>
 <script src="./js/bootstrap.min_4.5.0.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+	// 로그아웃 처리
+	$(document).ready(function() {
+		// msg 값이 세션에서 전달된 경우
+        var msg = '${msg}';  // JSTL을 사용하여 msg 값을 변수에 담음
+        
+		// 회원 탈퇴 성공 메시지
+		if (msg === "success") {
+            alert("회원 탈퇴가 완료되었습니다.");
+        }
+		
+		$("#logoutBtn").on("click", function() {
+			location.href = "./MemberLogout";
+		})
+
+	})
+</script>
 </head>
 <body>
 	<header id="main-header" class="py-2 btn-dark text-white">
@@ -47,6 +64,21 @@ li a:hover {
 			<div class="row">
 				<div class="col-md-6">
 					<h1>게시판</h1>
+				</div>
+				<div class="col-md-6 text-right">
+					<c:if test="${member == null}">
+						<div>
+							<a href="./MemberLogin" class="btn btn-secondary">로그인</a> <a href="./MemberRegister" class="btn btn-secondary">회원가입</a>
+						</div>
+					</c:if>
+					<c:if test="${member != null}">
+						<div>
+							<!-- memberId를 클릭하면 MemberMypage로 이동 -->
+							<a href="./MemberMypage" class="ml-sm-3 col-form-label"> ${member.memberId}님 </a>
+							<button id="logoutBtn" type="button" class="btn btn-secondary">로그아웃</button>
+						</div>
+					</c:if>
+
 				</div>
 			</div>
 		</div>

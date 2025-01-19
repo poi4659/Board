@@ -8,6 +8,30 @@
 	<!-- 회원 등록 -->
 	<insert id="register">
 		INSERT INTO member(memberId, memberPW, memberName)
-     	VALUES (#{memberId}, #{memberPW}, #{memberName})
+		VALUES (#{memberId}, #{memberPW}, #{memberName})
 	</insert>
+
+	<!-- 로그인 -->
+	<select id="login" resultType="MemberDTO">
+		SELECT memberId, memberPW,
+		memberName, memberDate FROM member
+		WHERE memberId=#{memberId} AND
+		memberPW=#{memberPW}
+	</select>
+
+	<!-- 회원 정보 수정 -->
+	<update id="memberUpdate">
+		UPDATE member
+		SET memberPW = #{memberPW},
+		memberName =
+		#{memberName}
+		WHERE memberId = #{memberId}
+	</update>
+
+	<!-- 회원 탈퇴 -->
+	<delete id="memberDelete">
+		DELETE FROM member 
+		WHERE memberId = #{memberId} 
+		AND memberPW=#{memberPW}
+	</delete>
 </mapper>

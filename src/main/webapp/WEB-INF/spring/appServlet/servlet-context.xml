@@ -24,4 +24,5 @@
 	</beans:bean>
 	<!--빈의 등록 여부와 관계없이 어노테이션을 활성화한다. -->
 	<context:component-scan base-package="jin.spring.board"/>
+	
 </beans:beans>

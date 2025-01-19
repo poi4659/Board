@@ -15,4 +15,6 @@ module SpringBoard {
 	requires spring.core;
 	requires spring.tx;
 	requires spring.web;
+	requires jakarta.servlet;
+	requires spring.webmvc;
 }
