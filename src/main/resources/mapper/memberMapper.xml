@@ -30,8 +30,15 @@
 
 	<!-- 회원 탈퇴 -->
 	<delete id="memberDelete">
-		DELETE FROM member 
-		WHERE memberId = #{memberId} 
+		DELETE FROM member
+		WHERE memberId = #{memberId}
 		AND memberPW=#{memberPW}
 	</delete>
+
+	<!-- 패스워드 체크: 조건에 맞는 결과가 몇개인지 카운트 -->
+	<select id="passCheck" resultType="int">
+		SELECT COUNT(*) FROM member
+		WHERE memberId = #{memberId}
+		AND memberPW=#{memberPW}
+	</select>
 </mapper>

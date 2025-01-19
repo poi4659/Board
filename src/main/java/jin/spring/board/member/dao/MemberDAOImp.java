@@ -51,4 +51,13 @@ public class MemberDAOImp implements MemberDAO{
 		sqlSessionTemplate.delete("jin.spring.member.memberDelete", memberDTO);
 	}
 
+//	패스워드 체크
+	@Override
+	public int passCheck(MemberDTO memberDTO) throws Exception {
+//		쿼리에서 조회한 값과 파라미터를 보내주는 값이 숫자이기 때문에 타입은 int형으로 선언해주고
+//		MemberService에서 전달받은 파라미터를 memberMapper.xml에 보냄
+		int result = sqlSessionTemplate.selectOne("jin.spring.member.passCheck", memberDTO);
+		return result;
+	}
+
 }

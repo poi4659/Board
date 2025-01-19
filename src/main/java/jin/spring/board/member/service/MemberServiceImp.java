@@ -56,4 +56,15 @@ public class MemberServiceImp implements MemberService{
 		memberDAO.memberDelete(memberDTO);
 	}
 
+//	패스워드 체크
+//	MemberController에서 보내주는 파라미터를 passCheck(MemberDTO memberDTO)로 받음
+	@Override
+	public int passCheck(MemberDTO memberDTO) throws Exception {
+//		result의 값: 쿼리 결과를 바탕으로 회원 정보가 유효한지 여부
+		int result = memberDAO.passCheck(memberDTO);
+		
+//		memberDAO에서 조회한 결과(result)를 호출한 상위 컨트롤러(MemberController)로 반환
+		return result;
+	}
+
 }

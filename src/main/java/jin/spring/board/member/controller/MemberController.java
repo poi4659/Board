@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -162,12 +163,15 @@ public class MemberController {
 //			redirect를 해야 플래시 속성이 전달됨
 			return "redirect:/MemberDelete";
 		}
-		
+
+//		삭제 데이터 확인
+		logger.info("memberDelete 요청 데이터: {}", memberDTO);
+
 //		회원 탈퇴
 		memberService.memberDelete(memberDTO);
-		
+
 //		회원 탈퇴 성공 메시지 전달
-	    rttr.addFlashAttribute("msg", "success");
+		rttr.addFlashAttribute("msg", "success");
 
 //		세션을 무효화하여 모든 세션 데이터를 삭제
 		session.invalidate();
@@ -175,4 +179,19 @@ public class MemberController {
 //		절대 경로로 지정하여 중복 경로가 발생하지 않도록 함
 		return "redirect:/BoardList";
 	}
+	
+	/*
+	 * 패스워드 체크 
+	 * @ResponseBody: 메서드가 반환하는 값을 HTTP 응답 본문에 직접 작성할 수 있도록 해줌
+	 * 여기서는 int 타입을 반환하고, 이 값은 클라이언트에 JSON 형식으로 전달
+	 */	
+	@ResponseBody
+//	POST 방식으로 /MemberPassCheck 경로에 요청이 들어올 때 이 메서드가 실행되도록 함
+//	MemberDTO memberDTO: 클라이언트에서 보낸 데이터가 MemberDTO 객체로 변환되어 메서드의 파라미터로 전달됨
+	@PostMapping("/MemberPassCheck")
+	public int postMethodName(MemberDTO memberDTO) throws Exception {
+		int result = memberService.passCheck(memberDTO);
+		return result;
+	}
+	
 }

@@ -24,15 +24,41 @@
 			location.href = "./BoardList";
 		});
 
-		// 비밀번호 미 입력시 폼 제출 안되게 함
+		// 회원 탈퇴 버튼 클릭-비밀번호 미 입력시 폼 제출 안되게 함
 		$("#submit").on("click", function() {
+			//event.preventDefault();  // 기본 폼 제출 방지
+
 			if ($("#memberPW").val() == "") {
 				alert("비밀번호를 입력해주세요.");
 				$("#memberPW").focus();
 				return false;
 			}
-			// 폼 제출 허용
-			return true;
+			// AJAX로 패스워드 체크
+			// AJAX 요청을 통해 서버와 비동기적으로 데이터를 주고받을 수 있음
+			$.ajax({
+				// 요청을 보낼 URL
+				url: "./MemberPassCheck",
+				// HTTP 요청 방식
+				type: "POST",
+				// 서버에서 받을 응답의 데이터 형식
+				dataType:"json",
+				// delForm 폼의 데이터를 직렬화(serialize)하여 서버에 전달
+				data: $("#delForm").serializeArray(),
+				// 요청이 성공적으로 완료되면 success 콜백 함수가 실행됨
+				success: function(data) {
+					// 서버에서 반환한 값이 0이라면 비밀번호가 틀렸다는 것
+					if (data==0) {
+						alert("비밀번호가 틀렸습니다.");
+						return;
+					} else {
+						// 비밀번호가 맞다면, confirm 팝업을 띄움
+						if (confirm("회원탈퇴 하시겠습니까?")) {
+							// 사용자 확인 후 회원탈퇴 폼(delForm)을 제출
+							 $("#delForm").submit();
+						}
+					}
+				}
+			});
 		});
 	});
 </script>
@@ -59,7 +85,7 @@
 						</div>
 						<div class="card-body">
 							<%-- POST 방식으로 데이터를 서버에 전송 --%>
-							<form method="post" id="sign_board">
+							<form method="post" id="delForm">
 								<fieldset>
 									<div class="form-group row">
 										<label for="memberId" class="ml-sm-3 col-form-label text-right"> 아이디 </label>
