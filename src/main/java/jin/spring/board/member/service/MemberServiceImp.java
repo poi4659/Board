@@ -67,4 +67,14 @@ public class MemberServiceImp implements MemberService{
 		return result;
 	}
 
+//	아이디 중복 체크
+	@Override
+	public int idCheck(MemberDTO memberDTO) throws Exception {
+//		result의 값: 쿼리 결과를 바탕으로 회원 정보가 유효한지 여부
+		int result = memberDAO.idCheck(memberDTO);
+		
+//		memberDAO에서 조회한 결과(result)를 호출한 상위 컨트롤러(MemberController)로 반환
+		return result;
+	}
+
 }
