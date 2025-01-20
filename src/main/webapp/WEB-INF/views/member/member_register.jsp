@@ -22,9 +22,10 @@
                 success: function(data) {
                     if (data == 1) {
                         alert("중복된 아이디입니다.");
+                        $("#idChk").val("N"); // 중복된 경우 다시 "N"으로 설정
                     } else if (data == 0) {
-                        $("#idChk").val("Y");
-                        alert("사용 가능한 아이디입니다.");
+                    	 $("#idChk").val("Y"); // 사용 가능하면 "Y"로 설정
+                         alert("사용 가능한 아이디입니다.");
                     }
                 },
                 error: function(xhr, status, error) {
@@ -33,7 +34,7 @@
             });
         }
 
-        // 버튼 클릭 이벤트
+     	// 중복 확인 버튼 클릭 시 동작
         $("#idChk").on("click", function() {
         	if($("#memberId").val()==""){
 				alert("아이디를 입력해주세요.");
@@ -48,10 +49,14 @@
 			location.href = "./BoardList";
 		});
 
-		$("#submit").on("click", function(){
+		// 회원가입 버튼 클릭 시 동작
+		$("#submit").on("click", function(event){
+			// 기본 폼 제출을 막음
+		    //event.preventDefault();
+
 			if($("#memberId").val()==""){
 				alert("아이디를 입력해주세요.");
-				$("#userId").focus();
+				$("#memberId").focus();
 				return false;
 			}
 			if($("#memberPW").val()==""){
@@ -64,12 +69,19 @@
 				$("#memberName").focus();
 				return false;
 			}
-			var idChkVal = $("#idChk").val();
-			if(idChkVal == "N"){
-				alert("중복확인 버튼을 눌러주세요.");
-			}else if(idChkVal == "Y"){
-				$("#regForm").submit();
-			}
+			
+			// 중복확인 버튼 상태 체크
+	        var idChkVal = $("#idChk").val();
+	        if (idChkVal != "Y") {
+	            alert("중복확인 버튼을 눌러주세요.");
+	            return false;
+	        } else {
+	        	// 디버깅용 로그
+	        	console.log("중복확인 완료, 폼 제출을 진행합니다.");
+	        	
+	            // 중복 확인을 통해 사용 가능한 아이디인 경우에만 폼 제출
+	             $("#regForm").submit();
+	        }
 		});
 	})
 	
@@ -106,7 +118,7 @@
 											<input type="text" name="memberId" id="memberId" class="form-control form-control-sm">
 										</div>
 										<div class="ml-sm-3">
-											<button type="button" id="idChk" data-id="N" class="btn btn-secondary">중복확인</button>
+											<button type="button" id="idChk" value="N" class="btn btn-secondary">중복확인</button>
 										</div>
 									</div>
 									<div class="form-group row">

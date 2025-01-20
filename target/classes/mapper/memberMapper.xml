@@ -15,16 +15,16 @@
 	<select id="login" resultType="MemberDTO">
 		SELECT memberId, memberPW,
 		memberName, memberDate FROM member
-		WHERE memberId=#{memberId} AND
-		memberPW=#{memberPW}
+		WHERE memberId=#{memberId} 
+		<!-- 입력된 비밀번호와 암호화된 비밀번호를 비교해주기 때문에 주석 처리
+		AND	memberPW=#{memberPW}  -->
 	</select>
 
 	<!-- 회원 정보 수정 -->
 	<update id="memberUpdate">
-		UPDATE member
-		SET memberPW = #{memberPW},
-		memberName =
-		#{memberName}
+		UPDATE member SET 
+		memberPW = #{memberPW},
+		memberName = #{memberName}
 		WHERE memberId = #{memberId}
 	</update>
 
@@ -32,7 +32,8 @@
 	<delete id="memberDelete">
 		DELETE FROM member
 		WHERE memberId = #{memberId}
-		AND memberPW=#{memberPW}
+		<!-- 입력된 비밀번호와 암호화된 비밀번호를 비교해주기 때문에 주석 처리
+		AND memberPW=#{memberPW} -->
 	</delete>
 
 	<!-- 패스워드 체크: 조건에 맞는 결과가 몇개인지 카운트 -->

@@ -33,6 +33,7 @@
 				$("#memberPW").focus();
 				return false;
 			}
+			
 			// AJAX로 패스워드 체크
 			// AJAX 요청을 통해 서버와 비동기적으로 데이터를 주고받을 수 있음
 			$.ajax({
@@ -46,16 +47,14 @@
 				data: $("#delForm").serializeArray(),
 				// 요청이 성공적으로 완료되면 success 콜백 함수가 실행됨
 				success: function(data) {
-					// 서버에서 반환한 값이 0이라면 비밀번호가 틀렸다는 것
-					if (data==0) {
-						alert("비밀번호가 틀렸습니다.");
-						return;
-					} else {
-						// 비밀번호가 맞다면, confirm 팝업을 띄움
+					if (data==true) {
 						if (confirm("회원탈퇴 하시겠습니까?")) {
 							// 사용자 확인 후 회원탈퇴 폼(delForm)을 제출
 							 $("#delForm").submit();
 						}
+					} else {
+						alert("비밀번호가 틀렸습니다.");
+						return;
 					}
 				}
 			});

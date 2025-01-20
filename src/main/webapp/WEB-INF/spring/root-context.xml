@@ -50,4 +50,8 @@
 	</bean>
 	<tx:annotation-driven
 		transaction-manager="transactionManager" />
+		
+	<!-- BCryptPasswordEncoder 빈 추가 -->
+    <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+		
 </beans>
