@@ -158,13 +158,21 @@ public class BoardServiceImp implements BoardService{
 //			"IS_NEW" 값이 "Y"이면 새로운 파일
 			if (tempMap.get("IS_NEW").equals("Y")) {
 				logger.info("새로운 파일 삽입 tempMap: {}", tempMap);
-//				새로운 파일일 경우, boardDAO.insertFile(tempMap)을 호출하여 파일을 데이터베이스에 삽입
+				
+				logger.info("파일 삽입 전 FILENUM: {}", tempMap.get("FILENUM"));
+
 				boardDAO.insertFile(tempMap);
+				
+				logger.info("파일 삽입 후 FILENUM: {}", tempMap.get("FILENUM"));
+
 			} else {
-				logger.info("기존 파일 업데이트 tempMap: {}", tempMap);
-//				기존 파일일 경우 boardDAO.updateFile(tempMap)을 호출하여 기존 파일을 업데이트
+				logger.info("기존 파일 업데이트 전 FILENUM: {}", tempMap.get("FILENUM"));
+				
 				tempMap.put("DELGB", "Y");  // 삭제 상태로 설정
 				boardDAO.updateFile(tempMap);
+				
+				logger.info("기존 파일 업데이트 tempMap: {}", tempMap);
+				logger.info("기존 파일 업데이트 전 FILENUM: {}", tempMap.get("FILENUM"));
 			}
 		}
 	}

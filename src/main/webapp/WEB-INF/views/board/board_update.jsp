@@ -15,8 +15,8 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        var fileNoArry = new Array(); // 삭제된 파일 번호를 저장할 배열
-        var fileNameArry = new Array(); // 삭제된 파일 이름을 저장할 배열
+        var fileNumArray = new Array(); // 삭제된 파일 번호를 저장할 배열
+        var fileNameArray = new Array(); // 삭제된 파일 이름을 저장할 배열
 
         // "파일 추가" 버튼 클릭 시 새로운 파일 입력 필드 추가
         $("#fileAdd_btn").on("click", function() {
@@ -35,12 +35,19 @@
             // 선택한 파일을 HTML에 추가
             for (var i = 0; i < fileInput.files.length; i++) {
                 var file = fileInput.files[i];
+                
+                // 파일 번호로 사용
+                var fileIndex = 1;
+                
+                // 파일 번호 및 파일 이름을 로그로 출력
+                console.log("추가된 파일 번호: " + fileIndex); // 예시로 파일 인덱스를 파일 번호로 사용
+                console.log("추가된 파일 이름: " + file.name);
 
                 // 기존 파일 목록에 새로운 파일 추가
                 fileList.append(
                     "<div>" +
-                        "<input type='hidden' name='fileNumDel[]' value='" + file.name + "' />" +
-                        "<input type='hidden' name='fileNameDel[]' value='" + file.name + "' />" +
+                    	"<input type='hidden' name='fileNumDel[]' value='" + fileIndex++ + "' />" + // 임시 파일 번호
+                    	"<input type='hidden' name='fileNameDel[]' value='" + file.name + "' />" + // 파일 이름은 그대로 file.name으로 설정
                         file.name + " (" +
                         (file.size / 1024).toFixed(2) + " KB)" +
                         "<button type='button' class='btn btn-danger btn-sm fileDelBtn' id='fileDelBtn'>삭제</button>" +
@@ -54,21 +61,35 @@
             console.log("파일 삭제 버튼 클릭됨");
             var fileDiv = $(this).parent(); // 삭제된 파일의 div
 
-            // 삭제된 파일의 정보 가져오기
-            var fileName = fileDiv.find("input[name='fileNameDel[]']").val();
-            var fileNum = fileDiv.find("input[name='fileNumDel[]']").val();
+            console.log(fileDiv.html());  // 해당 div의 HTML 구조를 출력
 
+            // 삭제된 파일의 정보 가져오기
+            var fileNum = fileDiv.find("input[name='fileNumDel[]']").val();
+            var fileName = fileDiv.find("input[name='fileNameDel[]']").val();
+
+            console.log(fileNum);
+            console.log(fileName);
+            
             // 삭제된 파일 정보를 배열에 추가
-            fileNoArry.push(fileNum);
-            fileNameArry.push(fileName);
+		    if (fileNum) {
+		        fileNumArray.push(fileNum); // 삭제할 파일 번호
+		    }
+		    if (fileName) {
+		        fileNameArray.push(fileName); // 삭제할 파일 이름
+		    }
 
             // 배열을 hidden input에 반영
-            $("#fileNumDel").val(fileNoArry.join(","));
-            $("#fileNameDel").val(fileNameArry.join(","));
+            $("#fileNumDel").val(fileNumArray.join(","));
+            $("#fileNameDel").val(fileNameArray.join(","));
+            
+        	// 콘솔에 확인
+            console.log("fileNumDel 값: ", $("#fileNumDel").val());
+            console.log("fileNameDel 값: ", $("#fileNameDel").val())
 
             // 파일 항목 삭제
             fileDiv.remove();
         });
+
     });
 </script>
 
@@ -121,8 +142,9 @@
 										</div>
 
 										<!-- 파일 삭제 관련 숨겨진 입력 필드에 설정하여 제출 -->
-										<input type="hidden" name="fileNumDel[]" value="">
-										<input type="hidden" name="fileNameDel[]" value="">
+										<!-- 자바스크립트에서 조작 -->
+										<input type="hidden" id="fileNumDel" name="fileNumDel[]" value="">
+										<input type="hidden" id="fileNameDel" name="fileNameDel[]" value="">
 
 										<!-- 첨부파일 -->
 										<div id="fileIndex">
@@ -133,8 +155,11 @@
 												<c:forEach var="file" items="${fileList}" varStatus="var">
 													<div>
 														<!-- 파일 번호와 파일 이름을 hidden input으로 관리 -->
-														<input type="hidden" name="FILENUMDEL[]" value="${file.FILENUM}">
-														<input type="hidden" name="FILENAMEDEL[]" value="${file.ORGFILENAME}">
+														<!-- 폼 제출 시 서버로 전송될 데이터로 사용 -->
+														<!-- name="fileNumDel[]": 이 부분에서 []를 사용하면 서버로 보내는 값이 배열로 처리 -->
+														<!-- value="${file.FILENUM}": 서버 측에서 받아오는 파일의 파일 번호(FILENUM)를 value로 설정 -->
+														<input type="hidden" name="fileNumDel[]" value="${file.FILENUM}">
+														<input type="hidden" name="fileNameDel[]" value="${file.ORGFILENAME}">
 														${file.ORGFILENAME} (${file.MPFILESIZE}KB)
 														<button type="button" class="btn btn-danger btn-sm fileDelBtn">삭제</button>
 													</div>

@@ -233,15 +233,24 @@ public class FileUtils {
 //		기존 파일 처리
 //		만약 files와 fileNames가 null이 아니면, 기존에 있던 파일들의 정보를 처리
 		if (files != null && fileNames != null) {
-			for (int i = 0; i < fileNames.length; i++) {
+			for (int i = 0; i < files.length; i++) {
 				listMap = new HashMap<String, Object>();
 
 //				IS_NEW 값을 N으로 설정하여 기존 파일임을 구분
 				listMap.put("IS_NEW", "N");
 
-//				기존 파일 번호 맵에 저장
-				listMap.put("FILENUM", files[i]);
+//				기존 파일 번호는 files[i]에 있어야 함
+		        String fileNum = files[i];
+		        
+//				파일 번호가 올바른지 로그로 확인
+		        logger.info("기존 파일 번호 : {}", fileNum);  // 파일 번호가 무엇인지 출력
 
+//		        파일 번호를 FILENUM에 설정
+		        listMap.put("FILENUM", fileNum);
+				
+//				기존 파일 이름도 함께 처리
+		        listMap.put("ORGFILENAME", fileNames[i]);
+		        
 //				기존 파일 정보 리스트에 추가
 				list.add(listMap);
 			}
