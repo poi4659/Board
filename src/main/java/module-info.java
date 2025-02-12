@@ -4,6 +4,7 @@ module SpringBoard {
 	exports jin.spring.board.dto;
 	exports jin.spring.test;
 	exports jin.spring.board.controller;
+	exports jin.spring.board.file;
 
 	requires java.sql;
 	requires lombok;
@@ -18,4 +19,5 @@ module SpringBoard {
 	requires jakarta.servlet;
 	requires spring.webmvc;
 	requires spring.security.crypto;
+	requires org.apache.commons.io;
 }

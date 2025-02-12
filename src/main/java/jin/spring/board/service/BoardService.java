@@ -1,6 +1,9 @@
 package jin.spring.board.service;
 
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import jin.spring.board.dto.BoardDTO;
 import jin.spring.board.dto.Criteria;
@@ -10,7 +13,8 @@ import jin.spring.board.dto.Criteria;
 //서비스 인터페이스의 구현 클래스에서는 해당 메서드를 public으로 구현해야 함
 public interface BoardService {
 //	게시글 작성
-	void boardInsert(BoardDTO boardDTO) throws Exception;
+//	MultipartHttpServlertRequest 추가
+	void boardInsert(BoardDTO boardDTO, MultipartHttpServletRequest mpRequest) throws Exception;
 	
 //	게시글 목록 조회
 	List<BoardDTO> boardSelectAll(Criteria cri) throws Exception;
@@ -22,8 +26,19 @@ public interface BoardService {
 	BoardDTO boardSelect(int bnum) throws Exception;
 	
 //	게시글 수정
-	void boardUpdate(BoardDTO boardDTO) throws Exception;
-	
+//	첨부파일 수정을 위해 코드 추가
+	void boardUpdate(BoardDTO boardDTO,
+					String[] files, 
+					String[] fileNames,
+					MultipartHttpServletRequest mpRequest) throws Exception;
+			
 //	게시글 삭제
 	void boardDelete(int bnum) throws Exception;
+
+//	첨부파일 조회
+	List<Map<String, Object>> boardSelectFileList(int bnum) throws Exception;
+
+//	첨부파일 다운로드
+	Map<String, Object> boardSelectFileInfo(Map<String, Object> map) throws Exception;
+
 }

@@ -6,28 +6,45 @@
 <!--네임스페이스의 충돌을 방지하기 위해 설정 -->
 <mapper namespace="jin.spring.board">
 	<!-- 게시글 작성 -->
-	<insert id="insert" parameterType="BoardDTO">
+	<!-- useGeneratedKeys="true": insert가 실행된 후, 데이터베이스에서 자동 생성된 키를 자동으로 받아오도록 
+		설정 -->
+	<!-- keyProperty="bnum": 자동 생성된 키 값을 받아올 속성 -->
+	<insert id="insert" parameterType="BoardDTO"
+		useGeneratedKeys="true" keyProperty="bnum">
+		<!-- <selectKey> 태그: 자동 증가 값을 얻기 위해 사용 -->
+		<!-- keyProperty="bnum": 생성된 키 값이 BoardDTO 객체의 bnum 필드에 저장 -->
+		<!-- resultType="int": 자동 생성된 키 값은 int 타입 -->
+		<!-- order="BEFORE": insert 쿼리 전에 실행할 SQL을 지정 -->
+		<selectKey keyProperty="bnum" resultType="int"
+			order="BEFORE">
+			SELECT BOARD_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
 		INSERT INTO board (bnum,
 		btitle, bcontent, bwriter)
-		VALUES (BOARD_SEQ.NEXTVAL, #{btitle},
+		VALUES (#{bnum},
+		#{btitle},
 		#{bcontent}, #{bwriter})
 	</insert>
 
-	<!-- 게시글 목록 조회-페이징 처리-->
-	<select id="listPage" resultType="BoardDTO"	parameterType="jin.spring.board.dto.Criteria">
+	<!-- 게시글 목록 조회-페이징 처리 -->
+	<select id="listPage" resultType="BoardDTO"
+		parameterType="jin.spring.board.dto.Criteria">
 		select bnum, btitle, bcontent, bwriter, bdate
-		from (select bnum, 
-					btitle, 
-					bcontent, 
-					bwriter, 
-					bdate,
-					row_number() over(order by bnum desc) as rNum
-				from board
-						) MP
-		where rNum between #{rowStart} and #{rowEnd}
+		from
+		(select bnum,
+		btitle,
+		bcontent,
+		bwriter,
+		bdate,
+		row_number() over(order by
+		bnum desc) as rNum
+		from board
+		) MP
+		where rNum between #{rowStart} and
+		#{rowEnd}
 		order by bnum desc
 	</select>
-	
+
 	<!-- 게시글 총 개수 -->
 	<select id="listCount" resultType="int">
 	<![CDATA[
@@ -57,4 +74,52 @@
 		delete from board where bnum =
 		#{bnum}
 	</delete>
+
+	<!-- 첨부파일 업로드 -->
+	<insert id="insertFile" parameterType="hashMap">
+		INSERT INTO mp_FILE (
+				FILENUM,
+				BNUM,
+				ORGFILENAME,
+				STOREDFILENAME,
+				MPFILESIZE
+		) VALUES (
+				FILENUM_SEQ.NEXTVAL,
+				#{BNUM},
+				#{ORGFILENAME},
+				#{STOREDFILENAME},
+				#{MPFILESIZE}
+		)
+	</insert>
+
+	<!-- 첨부파일 조회 -->
+	<select id="selectFileList" parameterType="int"
+		resultType="java.util.HashMap">
+		select FILENUM,
+		ORGFILENAME,
+		<!-- KB 단위로 변환하려고 /1024 수행, 소수점 첫째자리까지 반올림 -->
+		ROUND(MPFILESIZE/1024, 1) as MPFILESIZE,
+		DELGB
+		from MP_FILE
+		where BNUM = #{BNUM}
+		and DELGB = 'N'
+		<!-- 등록된 순서대로 조회할 수 있도록 추가 -->
+		ORDER BY FILENUM ASC
+	</select>
+
+	<!-- 첨부파일 다운로드 -->
+	<select id="selectFileInfo" parameterType="java.util.Map"
+		resultType="java.util.HashMap">
+		SELECT STOREDFILENAME, ORGFILENAME
+		FROM MP_FILE
+		where
+		FILENUM = #{FILENUM}
+	</select>
+
+	<!-- 첨부파일 수정 -->
+	<update id="updateFile" parameterType="java.util.HashMap">
+		UPDATE MP_FILE SET
+		DELGB = 'Y'
+		WHERE FILENUM = #{FILENUM}
+	</update>
 </mapper>

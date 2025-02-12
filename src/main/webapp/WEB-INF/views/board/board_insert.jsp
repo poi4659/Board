@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,39 +32,56 @@
 						</div>
 						<div class="card-body">
 							<%-- 폼 데이터를 서버에 POST 방식으로 전송 --%>
-							<form method="post" action="./BoardInsert">
-								<fieldset>
-									<div class="form-group row">
-										<label for="btitle" class="ml-sm-3 col-form-label"> 제목 </label>
-										<div class="ml-sm-3">
-											<%-- 각 항목에 대해 name 속성은 서버에서 데이터를 받는 키로 사용 --%>
-											<input type="text" name="btitle" id="btitle" class="form-control form-control-sm">
+							<form method="post" action="./BoardInsert" enctype="multipart/form-data">
+								<%-- 로그인 시에만 작성할 수 있게 추가--%>
+								<c:if test="${member.memberId != null}">
+									<fieldset>
+										<div class="form-group row">
+											<label for="btitle" class="ml-sm-3 col-form-label"> 제목 </label>
+											<div class="ml-sm-3">
+												<%-- 각 항목에 대해 name 속성은 서버에서 데이터를 받는 키로 사용 --%>
+												<input type="text" name="btitle" id="btitle" class="form-control form-control-sm">
+											</div>
 										</div>
-									</div>
-									<div class="form-group row">
-										<label for="bcontent" class="ml-sm-3 col-form-label"> 내용 </label>
-										<div class="ml-sm-3">
-											<input type="text" name="bcontent" id="bcontent" class="form-control form-control-sm">
+
+										<div class="form-group row">
+											<label for="bcontent" class="ml-sm-3 col-form-label"> 내용 </label>
+											<div class="ml-sm-3">
+												<input type="text" name="bcontent" id="bcontent" class="form-control form-control-sm">
+											</div>
 										</div>
-									</div>
-									<div class="form-group row">
-										<label for="bwriter" class="ml-sm-3 col-form-label"> 작성자 </label>
-										<div class="ml-sm-3">
-											<input type="text" name="bwriter" id="bwriter" class="form-control form-control-sm">
+
+										<%-- 작성자는 수정할 수 없도록 readonly 속성으로 설정 --%>
+										<div class="form-group row">
+											<label for="bwriter" class="ml-sm-3 col-form-label"> 작성자 </label>
+											<div class="ml-sm-3">
+												<input type="text" name="bwriter" id="bwriter" class="form-control form-control-sm" value="${member.memberId}" readonly>
+											</div>
 										</div>
-									</div>
-									<div class="form-group">
-										<%-- 사용자가 입력한 데이터를 서버로 제출하는 버튼 --%>
-										<button type="submit" class="btn btn-secondary">등록</button>
-										<%-- 폼을 초기화하여 입력된 데이터를 지우는 버튼 --%>
-										<button type="reset" class="btn btn-secondary">취소</button>
-									</div>
-								</fieldset>
+
+										<div class="form-group row">
+											<label for="file" class="ml-sm-3 col-form-label"> 파일 </label>
+											<div class="ml-sm-3">
+												<input type="file" name="file" class="form-control form-control-sm">
+											</div>
+										</div>
+										<div class="form-group">
+											<%-- 사용자가 입력한 데이터를 서버로 제출하는 버튼 --%>
+											<button type="submit" class="btn btn-secondary">등록</button>
+											<%-- 폼을 초기화하여 입력된 데이터를 지우는 버튼 --%>
+											<button type="reset" class="btn btn-secondary">취소</button>
+										</div>
+									</fieldset>
+								</c:if>
+								<c:if test="${member.memberId == null}">
+									<p>로그인 후에 작성하실 수 있습니다.</p>
+								</c:if>
 							</form>
 							<div>
 								<%-- 버튼을 클릭하면 게시글 목록 페이지로 리디렉션 --%>
 								<a href="./BoardList" class="btn btn-primary btn-block"> 게시글 목록 </a>
 							</div>
+
 						</div>
 					</div>
 				</div>

@@ -234,7 +234,21 @@
 	    <artifactId>spring-security-config</artifactId>
 	    <version>6.4.2</version>
 	</dependency>
-
+	
+	<!-- 250210 MultipartHttpServletRequset -->
+	 <!-- commons-fileupload -->
+    <dependency>
+        <groupId>commons-fileupload</groupId>
+        <artifactId>commons-fileupload</artifactId>
+        <version>1.5</version>
+    </dependency>
+    
+    <!-- commons-io -->
+    <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>2.18.0</version>
+    </dependency>
 	 
 	</dependencies>
 	<build>
